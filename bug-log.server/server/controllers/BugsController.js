@@ -3,7 +3,7 @@ import { bugsService } from '../services/BugsService.js'
 import { notesService } from '../services/NotesService.js'
 import BaseController from '../utils/BaseController'
 
-export class BugController extends BaseController {
+export class BugsController extends BaseController {
   constructor() {
     super('api/bugs')
     this.router

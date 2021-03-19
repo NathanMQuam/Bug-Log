@@ -5,16 +5,16 @@ class NotesService {
 
   }
 
-  async createNoteForBug(bugId) {
+  async createNoteForBug(bugId, creatorId, noteData) {
 
   }
 
   // NOTE: Optional stretch-goal
-  // async editNote(noteId) {
-  //
-  // }
+  async editNote(noteId, creatorId, noteData) {
 
-  async deleteNote(noteId) {
+  }
+
+  async deleteNote(noteId, creatorId) {
 
   }
 }
