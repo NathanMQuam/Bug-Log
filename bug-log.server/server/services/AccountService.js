@@ -46,9 +46,9 @@ function sanitizeBody(body) {
 }
 
 class AccountService {
-   /**
+  /**
     * Returns a list user profiles from a query search of name or email likeness
-    * limits to first 20 without offset 
+    * limits to first 20 without offset
     * @param {string} str
    */
   async findProfiles(str = '') {

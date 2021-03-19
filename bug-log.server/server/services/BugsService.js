@@ -24,15 +24,15 @@ class BugsService {
 
   }
 
-  async createNewBug() {
+  async createNewBug(bugData) {
 
   }
 
-  async editBug(bugId) {
+  async editBug(bugId, creatorId, bugData) {
 
   }
 
-  async closeBug(bugId) {
+  async closeBug(bugId, creatorId) {
 
   }
 }
