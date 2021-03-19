@@ -6,7 +6,7 @@ class BugsService {
     * Returns a list of all bugs
    */
   async getAllBugs() {
-    const bugs = await dbContext.Bug.find({})
+    const bugs = await dbContext.Bug.find({}).populate('creator')
     return bugs
   }
 
@@ -15,7 +15,7 @@ class BugsService {
    * @param {string} bugId
    */
   async getBugById(bugId) {
-    const bug = await dbContext.Bug.findById(bugId)
+    const bug = await dbContext.Bug.findOne({ _id: bugId }).populate('creator')
     return bug
   }
 
@@ -25,25 +25,25 @@ class BugsService {
   }
 
   async editBug(bugId, creatorId, bugData) {
-    if (!dbContext.Bug.findById(bugId).closed) {
-      const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, bugData, { new: true })
-      if (!bug) {
-        throw new BadRequest('You are not the CREATOR or BAD ID.')
-      }
-
-      return bug
-    } else {
-      throw new BadRequest('This bug has been closed and can no longer be changed')
+    // if (!dbContext.Bug.findById(bugId).closed) {
+    const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, bugData, { new: true })
+    if (!bug) {
+      throw new BadRequest('You are not the CREATOR or BAD ID.')
     }
+
+    return bug
+    // } else {
+    // throw new BadRequest('This bug has been closed and can no longer be changed')
+    // }
   }
 
   async closeBug(bugId, creatorId) {
-    if (!dbContext.Bug.findById(bugId).closed) {
-      const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, { closed: true }, { new: true })
-      return bug
-    } else {
-      throw new BadRequest('This bug has been closed and can no longer be changed')
-    }
+    // if (!dbContext.Bug.findById(bugId).closed) {
+    const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, { closed: true }, { new: true })
+    return bug
+    // } else {
+    // throw new BadRequest('This bug has been closed and can no longer be changed')
+    // }
   }
 }
 
