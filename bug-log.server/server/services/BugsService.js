@@ -1,11 +1,13 @@
-// import { dbContext } from '../db/DbContext'
+import { dbContext } from '../db/DbContext'
+import { BadRequest } from '../utils/Errors'
 
 class BugsService {
   /**
     * Returns a list of all bugs
    */
   async getAllBugs() {
-
+    const bugs = await dbContext.Bug.find({})
+    return bugs
   }
 
   /**
@@ -13,27 +15,35 @@ class BugsService {
    * @param {string} bugId
    */
   async getBugById(bugId) {
-
-  }
-
-  /**
-   * Returns all Notes with the bugID
-   * @param {string} bugId
-   */
-  async getNotesByBugId(bugId) {
-
+    const bug = await dbContext.Bug.findById(bugId)
+    return bug
   }
 
   async createNewBug(bugData) {
-
+    const bug = await dbContext.Bug.create(bugData)
+    return bug
   }
 
   async editBug(bugId, creatorId, bugData) {
+    if (!dbContext.Bug.findById(bugId).closed) {
+      const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, bugData, { new: true })
+      if (!bug) {
+        throw new BadRequest('You are not the CREATOR or BAD ID.')
+      }
 
+      return bug
+    } else {
+      throw new BadRequest('This bug has been closed and can no longer be changed')
+    }
   }
 
   async closeBug(bugId, creatorId) {
-
+    if (!dbContext.Bug.findById(bugId).closed) {
+      const bug = await dbContext.Bug.findOneAndUpdate({ _id: bugId, creatorId: creatorId }, { closed: true }, { new: true })
+      return bug
+    } else {
+      throw new BadRequest('This bug has been closed and can no longer be changed')
+    }
   }
 }
 
