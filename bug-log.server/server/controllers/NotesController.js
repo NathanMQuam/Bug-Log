@@ -8,14 +8,13 @@ export class NotesController extends BaseController {
     this.router
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createNoteForBug)
-      .put(':id', this.editNote)
-      .delete(':id', this.deleteNote)
+      .put('/:id', this.editNote)
+      .delete('/:id', this.deleteNote)
   }
 
   async createNoteForBug(req, res, next) {
     try {
       req.body.creatorId = req.userInfo.id
-      req.body.bug = req.params.id
       const note = await notesService.createNoteForBug(req.body)
       return res.send(note)
     } catch (error) {
@@ -36,9 +35,9 @@ export class NotesController extends BaseController {
 
   async deleteNote(req, res, next) {
     try {
-      req.body.creatorId = req.userInfo.id
-      const note = await notesService.deleteNote(req.params.id, req.body.creatorId)
-      return res.send(note)
+      // req.body.creatorId = req.userInfo.id
+      await notesService.deleteNote(req.params.id, req.userInfo.id)
+      return res.send()
     } catch (error) {
       next(error)
     }

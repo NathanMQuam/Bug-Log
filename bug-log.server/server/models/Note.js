@@ -10,4 +10,18 @@ const Note = new Schema({
   timestamps: true, toJSON: { virtuals: true }
 })
 
+Note.virtual('creator', {
+  localField: 'creatorId',
+  ref: 'Account',
+  foreignField: '_id',
+  justOne: true
+})
+
+// Note.virtual('bug', {
+//   localField: 'bug',
+//   ref: 'Bug',
+//   foreignField: '_id',
+//   justOne: true
+// })
+
 export default Note

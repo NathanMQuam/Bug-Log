@@ -2,8 +2,8 @@ import { dbContext } from '../db/DbContext'
 import { BadRequest } from '../utils/Errors'
 
 class NotesService {
-  async getNotesByBugId(query) {
-    const notes = await dbContext.Note.findById(query)
+  async getNotesByBugId(bugId) {
+    const notes = await dbContext.Note.find({ bug: bugId })
     return notes
   }
 
@@ -14,21 +14,22 @@ class NotesService {
 
   // NOTE: Optional stretch-goal
   async editNote(noteId, creatorId, noteData) {
-    // if (creatorId === dbContext.Note.findById(noteId).creatorId) {
-    const note = await dbContext.Note.findOneAndReplace({ _id: noteId, creatorId: creatorId }, noteData, { new: true })
-    return note
-    // } else {
-    // throw new BadRequest('You are not the creator of this note')
-    // }
+    if (creatorId === dbContext.Note.findById(noteId).creatorId) {
+      const note = await dbContext.Note.findOneAndReplace({ _id: noteId, creatorId: creatorId }, noteData, { new: true })
+      return note
+    } else {
+      throw new BadRequest('You are not the creator of this note')
+    }
   }
 
-  async deleteNote(noteId, creatorId) {
-    // if (creatorId === dbContext.Note.findById(noteId).creatorId) {
-    const note = await dbContext.Note.findByIdAndDelete(noteId)
-    return note
-    // } else {
-    // throw new BadRequest('You are not the creator of this note')
-    // }
+  async deleteNote(noteId, userId) {
+    const note = await dbContext.Note.findById(noteId)
+    const creatorId = note.creatorId
+    if (userId === creatorId) {
+      await dbContext.Note.findByIdAndRemove(noteId)
+    } else {
+      throw new BadRequest('You are not the creator of this note')
+    }
   }
 }
 
