@@ -56,7 +56,9 @@ export class BugsController extends BaseController {
   async editBug(req, res, next) {
     try {
       req.body.creatorId = req.userInfo.id
+      delete req.body.closed
       const bug = await bugsService.editBug(req.params.id, req.body.creatorId, req.body)
+      if (bug.closed) { return res.status(403).send(bug) }
       return res.send(bug)
     } catch (error) {
       next(error)
