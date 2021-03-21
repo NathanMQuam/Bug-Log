@@ -40,13 +40,31 @@
       </div>
     </div>
     <!-- Bug Rows -->
-    <div class="row" />
+    <Bug class="row p-1" v-for="bug in state.bugs" :key="bug.id" :bug="bug" />
   </div>
 </template>
 
 <script>
+import { computed, onMounted, reactive } from 'vue'
+import { bugsService } from '../services/BugsService.js'
+import Bug from '../components/Bug'
+import { AppState } from '../AppState'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    onMounted(() => {
+      bugsService.getAllBugs()
+    })
+    const state = reactive({
+      bugs: computed(() => AppState.bugs)
+    })
+    return {
+      state
+    }
+  },
+  components: {
+    Bug
+  }
 }
 </script>
 
