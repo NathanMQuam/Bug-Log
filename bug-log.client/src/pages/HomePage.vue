@@ -4,9 +4,7 @@
       <div class="col-6">
         <div class="d-flex justify-content-between">
           <h2>Current Bugs</h2>
-          <button class="btn btn-dark text-light">
-            Report
-          </button>
+          <ReportBug />
         </div>
       </div>
       <div class="col-6">
@@ -48,6 +46,7 @@
 import { computed, onMounted, reactive } from 'vue'
 import { bugsService } from '../services/BugsService.js'
 import Bug from '../components/Bug'
+import ReportBug from '../components/ReportBug'
 import { AppState } from '../AppState'
 export default {
   name: 'Home',
@@ -63,7 +62,8 @@ export default {
     }
   },
   components: {
-    Bug
+    Bug,
+    ReportBug
   }
 }
 </script>

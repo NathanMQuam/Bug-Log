@@ -1,5 +1,5 @@
 <template>
-  <div class="Bug">
+  <div class="Bug" @click="goToBug">
     <div class="col-4">
       {{ bug.title }}
     </div>
@@ -22,7 +22,11 @@ export default {
     bug: Object
   },
   setup() {
-    return {}
+    return {
+      goToBug() {
+        console.log('Go to bug')
+      }
+    }
   },
   components: {}
 }
