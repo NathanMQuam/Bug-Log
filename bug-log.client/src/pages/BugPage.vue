@@ -1,13 +1,18 @@
 <template>
-  <div class="BugPage w-100">
+  <div class="BugPage w-100" v-if="bug.creator">
     <div class="container">
       <div class="row my-3">
-        <div class="col-10">
+        <div class="col-10 d-flex">
           <h2>{{ bug.title }}</h2>
+          <div v-if="user.email === bug.creator.email">
+            <EditBug :bug="bug" />
+          </div>
         </div>
         <div class="col-2 bg-danger text-light">
-          <div class="d-flex justify-content-center align-items-center h-100 text-capitalize">
-            {{ bug.closed }}
+          <div v-if="!bug.closed">
+            <button @click="closeBug" class="btn btn-danger" type="button">
+              Close Bug?
+            </button>
           </div>
         </div>
       </div>
@@ -28,9 +33,8 @@
     <div class="container mt-3">
       <div class="row">
         <div class="d-flex align-items-center">
-          <h4>Notes</h4> <button class="btn btn-primary ml-3">
-            Add
-          </button>
+          <h4>Notes</h4>
+          <AddNote :bug="bug.id" />
         </div>
       </div>
     </div>
@@ -39,11 +43,8 @@
         <div class="col-3">
           <h5>Name</h5>
         </div>
-        <div class="col">
+        <div class="col text-left">
           <h5>Message</h5>
-        </div>
-        <div class="col-1">
-          <h5>Delete</h5>
         </div>
       </div>
       <Note v-for="note in notes" :key="note.id" :note="note" />
@@ -58,23 +59,33 @@ import { AppState } from '../AppState.js'
 import { bugsService } from '../services/BugsService.js'
 import { notesService } from '../services/NotesService.js'
 import Note from '../components/Note'
+import EditBug from '../components/EditBug'
+import AddNote from '../components/AddNote'
+
 export default {
   name: 'BugPage',
   setup() {
     const route = useRoute()
     const bug = computed(() => AppState.activeBug)
     const notes = computed(() => AppState.notes)
+    const user = computed(() => AppState.user)
     onMounted(() => {
       bugsService.getBugById(route.params.id)
       notesService.getNotesByBugId(route.params.id)
     })
     return {
       bug,
-      notes
+      notes,
+      user,
+      closeBug() {
+        //
+      }
     }
   },
   components: {
-    Note
+    Note,
+    EditBug,
+    AddNote
   }
 }
 </script>

@@ -36,7 +36,11 @@ class BugsService {
 
   async editBug(id, data) {
     try {
-      //
+      delete data.closed
+      const res = await api.put('/api/bugs/' + id, data)
+      console.log(data)
+      AppState.activeBug = new Bug(res.data)
+      this.getBugById(id)
     } catch (error) {
       logger.error(error)
     }
