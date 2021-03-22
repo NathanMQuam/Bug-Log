@@ -19,6 +19,7 @@ class BugsService {
       AppState.activeBug = new Bug()
       const res = await api.get('/api/bugs/' + id)
       AppState.activeBug = new Bug(res.data)
+      return res
     } catch (error) {
       logger.error(error)
     }
@@ -34,12 +35,13 @@ class BugsService {
     }
   }
 
-  async editBug(id, data) {
+  async editBug(id, bugData) {
     try {
-      delete data.closed
-      const res = await api.put('/api/bugs/' + id, data)
-      console.log(data)
-      AppState.activeBug = new Bug(res.data)
+      delete bugData.closed
+      const res = await this.getBugById(id)
+      if (!res.data.closed) {
+        await api.put('/api/bugs/' + id, bugData)
+      }
       this.getBugById(id)
     } catch (error) {
       logger.error(error)
@@ -48,7 +50,8 @@ class BugsService {
 
   async closeBug(id) {
     try {
-      //
+      await api.delete('/api/bugs/' + id)
+      this.getBugById(id)
     } catch (error) {
       logger.error(error)
     }

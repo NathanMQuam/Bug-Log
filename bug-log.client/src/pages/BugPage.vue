@@ -4,11 +4,11 @@
       <div class="row my-3">
         <div class="col-10 d-flex">
           <h2>{{ bug.title }}</h2>
-          <div v-if="user.email === bug.creator.email">
-            <EditBug :bug="bug" />
+          <div v-if="!bug.closed">
+            <EditBug v-if="user.email === bug.creator.email" :bug="bug" />
           </div>
         </div>
-        <div class="col-2 bg-danger text-light">
+        <div class="col-2">
           <div v-if="!bug.closed">
             <button @click="closeBug" class="btn btn-danger" type="button">
               Close Bug?
@@ -21,7 +21,7 @@
           Reported by: <h5>{{ bug.creator.name }}</h5>
         </div>
         <div class="col-2">
-          Status: <span class="text-danger text-capitalize">{{ bug.closed }}</span>
+          Status: <span :class="bug.closed ? 'text-success' : 'text-danger' ">{{ bug.closed ? 'Closed' : 'Open' }}</span>
         </div>
       </div>
       <div class="row p-3">
@@ -78,7 +78,7 @@ export default {
       notes,
       user,
       closeBug() {
-        //
+        bugsService.closeBug(bug.value.id)
       }
     }
   },
