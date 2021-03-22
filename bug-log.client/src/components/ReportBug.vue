@@ -28,7 +28,7 @@
             <div>
               <div class="form-group d-inline-block w-50">
                 <label for="newBugTitle">Bug Title</label>
-                <input type="email" class="form-control" id="newBugTitle" aria-describedby="emailHelp" placeholder="Enter email">
+                <input type="text" class="form-control" id="newBugTitle" placeholder="Title of Bug" v-model="newBug.title">
               </div>
               <div class="d-inline-block w-50 mb-auto">
                 Reported By:
@@ -39,8 +39,8 @@
             </div>
             <div class="form-group">
               <label for="newBugDescription">Description</label>
-              <textArea type="password" class="form-control" id="newBugDescription" rows="3">
-              </textArea>
+              <textarea class="form-control" id="newBugDescription" rows="3" v-model="newBug.description">
+              </textarea>
             </div>
           </div>
 
@@ -61,14 +61,20 @@
 <script>
 import { computed } from 'vue'
 import { AppState } from '../AppState.js'
+import { bugsService } from '../services/BugsService.js'
+import $ from 'jquery'
+
 export default {
   name: 'ReportBug',
   setup() {
     const user = computed(() => AppState.user)
+    const newBug = {}
     return {
       user,
+      newBug,
       submitBug() {
-        console.log('form submission')
+        bugsService.createBug(newBug)
+        $('#reportBugModal').modal('hide')
       }
     }
   },
