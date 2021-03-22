@@ -11,7 +11,7 @@
           </div>
         </div>
       </div>
-      <div class="row my-3">
+      <div class="row mt-3">
         <div class="col-10">
           Reported by: <h5>{{ bug.creator.name }}</h5>
         </div>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="row p-3">
-        <div class="col border border-dark">
+        <div class="col border border-dark rounded p-2">
           {{ bug.description }}
         </div>
       </div>

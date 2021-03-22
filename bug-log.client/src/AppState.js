@@ -13,5 +13,11 @@ export const AppState = reactive({
     creator: {
       name: 'AppState creator name'
     }
+  }),
+  new Note({
+    body: 'AppState note test2',
+    creator: {
+      name: 'AppState creator2 name'
+    }
   })]
 })
