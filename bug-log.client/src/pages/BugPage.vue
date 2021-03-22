@@ -56,6 +56,7 @@ import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState.js'
 import { bugsService } from '../services/BugsService.js'
+import { notesService } from '../services/NotesService.js'
 import Note from '../components/Note'
 export default {
   name: 'BugPage',
@@ -65,6 +66,7 @@ export default {
     const notes = computed(() => AppState.notes)
     onMounted(() => {
       bugsService.getBugById(route.params.id)
+      notesService.getNotesByBugId(route.params.id)
     })
     return {
       bug,

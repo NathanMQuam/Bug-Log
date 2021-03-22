@@ -15,6 +15,7 @@ class BugsService {
 
   async getBugById(id) {
     try {
+      AppState.activeBug = new Bug()
       const res = await api.get('/api/bugs/' + id)
       AppState.activeBug = new Bug(res.data)
     } catch (error) {
