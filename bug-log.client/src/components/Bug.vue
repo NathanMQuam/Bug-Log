@@ -7,7 +7,7 @@
       {{ bug.creator.name }}
     </div>
     <div class="col-2">
-      {{ bug.closed }}
+      <span :class="statusStyle">{{ bug.closed }}</span>
     </div>
     <div class="col-3">
       {{ bug.lastModified }}
@@ -21,9 +21,19 @@ export default {
   props: {
     bug: Object
   },
-  setup() {
-    return {}
+  setup(props) {
+    const statusStyle = props.bug.closed ? 'text-success' : 'text-danger'
+    console.log(statusStyle)
+    return {
+      statusStyle
+    }
   },
   components: {}
 }
 </script>
+
+<style scoped>
+  router-link {
+    /*  */
+  }
+</style>
