@@ -7,6 +7,5 @@ export class Bug {
     this.lastModified = data.updatedAt || ''
     this.closed = data.closed || false
     this.closedDate = data.closedDate || ''
-    console.log(data)
   }
 }

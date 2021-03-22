@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import { Bug } from './models/Bug.js'
+import { Note } from './models/Note.js'
 
 // NOTE AppState is a reactive object to contain app level data
 export const AppState = reactive({
@@ -7,5 +8,10 @@ export const AppState = reactive({
   account: {},
   bugs: [],
   activeBug: new Bug(),
-  notes: []
+  notes: [new Note({
+    body: 'AppState note test',
+    creator: {
+      name: 'AppState creator name'
+    }
+  })]
 })
