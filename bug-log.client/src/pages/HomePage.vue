@@ -8,12 +8,8 @@
         </div>
       </div>
       <div class="col-6">
-        <!-- <div class="w-100 h-100 d-block"> -->
-        <!-- <div class="ml-auto mt-auto"> -->
-        <input class="mt-auto ml-auto mr-2" type="checkbox" name="hideClosed">
+        <input class="mt-auto ml-auto mr-2" type="checkbox" name="hideClosed" v-model="state.hideClosedBugs">
         <label class="mt-auto" for="hideClosed"><small>Hide Closed Bugs?</small></label>
-        <!-- </div> -->
-        <!-- </div> -->
       </div>
     </div>
     <!-- Label Row -->
@@ -38,7 +34,9 @@
       </div>
     </div>
     <!-- Bug Rows -->
-    <Bug class="row p-1" v-for="bug in state.bugs" :key="bug.id" :bug="bug" />
+    <div v-for="bug in state.bugs" :key="bug.id">
+      <Bug class="row p-1" :bug="bug" v-if="!state.hideClosedBugs && bug.closed || !bug.closed" />
+    </div>
   </div>
 </template>
 
@@ -53,12 +51,17 @@ export default {
   setup() {
     onMounted(() => {
       bugsService.getAllBugs()
+      state.hideClosedBugs = false
     })
     const state = reactive({
-      bugs: computed(() => AppState.bugs)
+      bugs: computed(() => AppState.bugs),
+      hideClosedBugs: Boolean
     })
     return {
-      state
+      state,
+      toggleHideBugs() {
+        state.hideClosedBugs = !state.hideClosedBugs
+      }
     }
   },
   components: {

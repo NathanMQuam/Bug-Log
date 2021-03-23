@@ -1,7 +1,7 @@
 <template>
   <div class="Note row">
     <div class="col-3">
-      {{ note.creator.name }}
+      <Author :user="note.creator" />
     </div>
     <div class="col">
       {{ note.body }}
@@ -17,6 +17,7 @@ import { computed } from 'vue'
 import { AppState } from '../AppState.js'
 import { Note } from '../models/Note.js'
 import { notesService } from '../services/NotesService.js'
+import Author from './Author'
 export default {
   name: 'Note',
   props: {
@@ -27,10 +28,14 @@ export default {
     return {
       user,
       deleteNote() {
-        notesService.deleteNote(props.note)
+        if (window.confirm('Are you sure you want to delete this note?')) {
+          notesService.deleteNote(props.note)
+        }
       }
     }
   },
-  components: {}
+  components: {
+    Author
+  }
 }
 </script>

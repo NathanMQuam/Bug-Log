@@ -8,7 +8,7 @@
             <EditBug v-if="user.email === bug.creator.email" :bug="bug" />
           </div>
         </div>
-        <div class="col-2">
+        <div class="col-2" v-if="user.email === bug.creator.email">
           <div v-if="!bug.closed">
             <button @click="closeBug" class="btn btn-danger" type="button">
               Close Bug?
@@ -78,7 +78,9 @@ export default {
       notes,
       user,
       closeBug() {
-        bugsService.closeBug(bug.value.id)
+        if (window.confirm('Are you sure you want to close this bug?')) {
+          bugsService.closeBug(bug.value.id)
+        }
       }
     }
   },
